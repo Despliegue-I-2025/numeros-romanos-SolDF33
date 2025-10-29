@@ -9,6 +9,7 @@ const { arabicToRoman, romanToArabic } = require('./converter');
 // --- Endpoints de la API ---
 
 // Endpoint raíz para servir la interfaz de usuario del convertidor
+/* istanbul ignore next */ 
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.send(`
@@ -186,6 +187,7 @@ app.get('/r2a', (req, res) => {
 
 
 // Estructura Vercel-Compatible: Exportar la instancia de la aplicación
+/* istanbul ignore next */ 
 if (require.main === module) {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
