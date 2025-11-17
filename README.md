@@ -1,56 +1,68 @@
-# 🚀 TP Final: API Conversora de Números Romanos y Arábigos
+🔢 Conversor Bidireccional de Números Romanos (API REST)
 
-Este proyecto implementa una **API REST** utilizando Node.js y Express para la conversión bidireccional entre números arábigos (enteros de 1 a 3999) y números romanos.
+Este proyecto implementa una API RESTful robusta, construida en Node.js y Express, que maneja la conversión de números entre los sistemas Arábigo y Romano.
 
-El proyecto incluye **tests unitarios** y un flujo de **Integración/Despliegue Continuo (CI/CD)** a través de GitHub Actions.
+Todo el código de la lógica de conversión está encapsulado en un módulo independiente (converter.js) y está cubierto al 100% por pruebas unitarias utilizando la librería Jest.
 
-***
+🔗 Despliegue en Vivo (Vercel)
 
-## 🌐 Endpoints de la API
+La aplicación final se ha desplegado correctamente como una Función Serverless en Vercel.
 
-La API expone dos endpoints principales (se asume que el dominio base es el provisto por Vercel, ej: `https://[app-name].vercel.app`):
+🌐 URL del Servicio (API en Producción)
 
-| Método | Endpoint | Descripción | Parámetros Requeridos |
-| :--- | :--- | :--- | :--- |
-| **GET** | `/a2r` | Convierte un número arábigo a romano. | `?arabic=VALOR` |
-| **GET** | `/r2a` | Convierte un número romano a arábigo. | `?roman=VALOR` |
+https://ar-bicos-romanos-tpdespliegue-saeh-git-master-soldf33s-projects.vercel.app/
 
-### Ejemplos de Uso:
+🎯 Endpoints de la API
 
-| Conversión | URL de Ejemplo | Resultado (JSON) |
-| :--- | :--- | :--- |
-| **1994 a Romano** | `/a2r?arabic=1994` | `{ "roman": "MCMXCIV" }` |
-| **XXXVI a Arábigo** | `/r2a?roman=XXXVI` | `{ "arabic": 36 }` |
+La API expone dos endpoints principales para la conversión bidireccional:
 
-***
+Conversión
 
-## ⚙️ Instalación y Uso Local
+Método
 
-Para poner la API en funcionamiento en tu máquina local:
+Endpoint de Ejemplo
 
-1.  **Clonar el Repositorio:**
-    ```bash
-    git clone [https://github.com/Despliegue-I-2025/numeros-romanos-SolDF33](https://github.com/Despliegue-I-2025/numeros-romanos-SolDF33)
-    cd numeros-romanos-SolDF33
-    ```
-2.  **Instalar Dependencias:**
-    ```bash
-    npm install
-    ```
-3.  **Ejecutar la API Localmente:**
-    ```bash
-    npm start
-    ```
-    La API estará disponible en `http://localhost:3000`.
+Parámetro
 
-***
+Resultado Esperado
 
-## 🧪 Pruebas Unitarias y de Integración (Jest & Supertest)
+Arábigo → Romano
 
-El proyecto utiliza **Jest** para ejecutar tests unitarios sobre las funciones de conversión (`arabicToRoman` y `romanToArabic`) y **Supertest** para realizar pruebas de integración directamente sobre los endpoints de la API (`/a2r` y `/r2a`), verificando códigos de estado y respuestas JSON.
+GET
 
-### Ejecutar Tests:
+/api/toRoman
 
-```bash
-# Ejecuta todos los tests y genera un reporte de cobertura
+?arabic=1984
+
+{"roman": "MCMLXXXIV"}
+
+Romano → Arábigo
+
+GET
+
+/api/toArabic
+
+?roman=MCMLXXXIV
+
+{"arabic": 1984}
+
+🛠️ Ejecución Local y Tests
+
+Para revisar el código, ejecutar la API o correr los tests de forma local:
+
+Instalar dependencias:
+
+npm install
+
+
+Correr Tests de Unidad (Jest):
+
 npm test
+
+
+Iniciar el Servidor Local:
+
+npm start
+
+
+La API estará disponible en http://localhost:3000.
