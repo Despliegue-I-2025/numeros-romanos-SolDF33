@@ -1,69 +1,93 @@
-// Definición de las constantes de conversión 
-const ROMAN_MAP = new Map([
-    [1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'],
-    [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'],
-    [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']
-]);
+// converter.js
 
 /**
  * Convierte un número arábigo a romano.
- * @param {number} arabic - Número entero entre 1 y 3999.
- * @returns {string} - Representación en números romanos.
- * @throws {Error} - Si el número está fuera del rango o no es un entero.
+ * @param {number} num - El número arábigo (1-3999).
+ * @returns {string} El número romano.
+ * @throws {Error} Si el número está fuera del rango permitido.
  */
-function arabicToRoman(arabic) {
-    if (typeof arabic !== 'number' || arabic <= 0 || arabic > 3999 || !Number.isInteger(arabic)) {
+function arabicToRoman(num) {
+    // ⚠️ Importante: Este mensaje de error debe coincidir con el test.
+    if (num < 1 || num > 3999 || !Number.isInteger(num)) {
         throw new Error("El número debe ser un entero entre 1 y 3999.");
     }
 
-    let roman = '';
-    let num = arabic;
-    for (const [value, symbol] of ROMAN_MAP.entries()) {
-        while (num >= value) {
-            roman += symbol;
-            num -= value;
+    const map = [
+        { value: 1000, symbol: "M" },
+        { value: 900, symbol: "CM" },
+        { value: 500, symbol: "D" },
+        { value: 400, symbol: "CD" },
+        { value: 100, symbol: "C" },
+        { value: 90, symbol: "XC" },
+        { value: 50, symbol: "L" },
+        { value: 40, symbol: "XL" },
+        { value: 10, symbol: "X" },
+        { value: 9, symbol: "IX" },
+        { value: 5, symbol: "V" },
+        { value: 4, symbol: "IV" },
+        { value: 1, symbol: "I" },
+    ];
+
+    let result = '';
+    let i = 0;
+    let currentNum = num;
+
+    while (currentNum > 0) {
+        if (currentNum >= map[i].value) {
+            result += map[i].symbol;
+            currentNum -= map[i].value;
+        } else {
+            i++;
         }
     }
-    return roman;
+    return result;
 }
 
 /**
  * Convierte un número romano a arábigo.
- * @param {string} roman - Cadena de texto que representa un número romano válido.
- * @returns {number} - El valor arábigo.
- * @throws {Error} - Si el formato del número romano es inválido.
+ * @param {string} roman - El número romano.
+ * @returns {number} El número arábigo.
+ * @throws {Error} Si el formato del número romano es inválido.
  */
 function romanToArabic(roman) {
-    if (typeof roman !== 'string' || roman.length === 0) {
-        throw new Error("La entrada debe ser una cadena de texto no vacía.");
-    }
-    
-    const uppercaseRoman = roman.toUpperCase();
-    const romanRegex = /^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i;
-    if (!romanRegex.test(uppercaseRoman)) {
-        throw new Error("El formato del número romano es inválido o excede el rango.");
-    }
-
-    const ROMAN_VALUES = {
-        'I': 1, 'V': 5, 'X': 10, 'L': 50,
-        'C': 100, 'D': 500, 'M': 1000
+    const map = {
+        'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
     };
+    
+    // ⚠️ Importante: Este mensaje de error debe coincidir con el test.
+    const invalidRomanError = "El formato del número romano es inválido o excede el rango.";
 
-    let arabic = 0;
-    for (let i = 0; i < uppercaseRoman.length; i++) {
-        const current = ROMAN_VALUES[uppercaseRoman[i]];
-        const next = ROMAN_VALUES[uppercaseRoman[i + 1]];
+    let result = 0;
+    
+    // Simple validación de caracteres
+    if (!/^[IVXLCDM]+$/i.test(roman)) {
+        throw new Error(invalidRomanError);
+    }
 
-        if (next < current) { // Esto es un error en la lógica anterior, lo corrijo aquí: next > current es la sustracción.
-            arabic += current;
-        } else if (next > current) {
-            arabic += (next - current);
-            i++; 
+    for (let i = 0; i < roman.length; i++) {
+        const current = map[roman[i]];
+        const next = map[roman[i + 1]];
+
+        if (next > current) {
+            result += next - current;
+            i++; // Saltar el siguiente carácter ya que se usó en la resta
         } else {
-            arabic += current;
+            result += current;
         }
     }
-    return arabic;
+
+    // Comprobación de validez (verifica que el romano generado a partir del resultado
+    // coincida con la entrada original para evitar casos como 'IIII' o 'IL').
+    try {
+        if (arabicToRoman(result) !== roman || result > 3999 || result < 1) {
+             throw new Error(invalidRomanError);
+        }
+    } catch (e) {
+        // Capturamos el error de rango lanzado por arabicToRoman si es necesario.
+        throw new Error(invalidRomanError);
+    }
+
+    return result;
 }
 
 module.exports = {
