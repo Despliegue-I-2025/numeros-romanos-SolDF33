@@ -65,4 +65,8 @@ Iniciar el Servidor Local:
 npm start
 
 
+<<<<<<< HEAD
 La API estará disponible en http://localhost:3000.
+=======
+La API estará disponible en http://localhost:3000.
+>>>>>>> 7ba735987b84c14949b6f1f3ef734633182b3197
